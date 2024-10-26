@@ -1,0 +1,58 @@
+import requests 
+import tkinter as tk
+from tkinter import messagebox
+
+API_KEY = "aea56f78b83a41ca9de71221242610"
+BASE_URL = "http://api.weatherapi.com/v1/current.json"
+
+def weatherGrabber(nameOfCity):
+    finalURL = f"{BASE_URL}?key={API_KEY}&q={nameOfCity}&aqi=no"
+
+    APIResponse = requests.get(finalURL)
+    weatherInformation = APIResponse.json()
+
+    if "error" not in weatherInformation:
+        current = weatherInformation["current"]
+        location = weatherInformation["location"]
+        
+        temp = current["temp_c"]
+        pressure = current["pressure_mb"]
+        humidity = current["humidity"]
+        weatherDesc = current["condition"]["text"]
+
+        weatherDetails = (
+            f"Location: {location['name']}, {location['country']}\n"
+            f"Temperature: {temp}°C\n"
+            f"Pressure: {pressure} hPa\n"
+            f"Humidity: {humidity}%\n"
+            f"Description: {weatherDesc.capitalize()}"
+        )
+        return weatherDetails
+    else:
+        return "City Not Found"
+    
+def showWeather():
+    nameOfCity = cityEntry.get()
+    if nameOfCity:
+        weatherInformation = weatherGrabber(nameOfCity)
+        weatherResult.config(text=weatherInformation)
+    else:
+        messagebox.showwarning("Input Error", "Please enter a valid City name")
+
+root = tk.Tk()
+root.title("Weather API Project")
+root.geometry("600x380")
+
+cityLabel = tk.Label(root, text="Enter a City :)", font=("Segoe Script", 14))
+cityLabel.pack(pady=10)
+
+cityEntry = tk.Entry(root, width=30, font=("Segoe Script", 14))
+cityEntry.pack(pady=10)
+
+checkButton = tk.Button(root, text="Show Weather In This Location", command=showWeather, font=("Segoe Script", 14))
+checkButton.pack(pady=10)
+
+weatherResult = tk.Label(root, text="", font=("Segoe Script", 14), justify="left")
+weatherResult.pack(pady=20)
+
+root.mainloop()
