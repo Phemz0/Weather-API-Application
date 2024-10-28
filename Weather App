@@ -2,7 +2,7 @@ import requests
 import tkinter as tk
 from tkinter import messagebox
 
-API_KEY = "aea56f78b83a41ca9de71221242610"
+API_KEY = "Your key here"
 BASE_URL = "http://api.weatherapi.com/v1/current.json"
 
 isCelsius = True
