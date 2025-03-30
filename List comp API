@@ -1,0 +1,25 @@
+import requests
+import webbrowser
+
+url = "https://api.nasa.gov/planetary/apod?api_key=(your API key)"
+
+r = requests.get(url)
+data = r.json()
+res = ''
+update_dict = {
+
+}
+
+update_dict.update(data)
+url_comp = [data[x]for x in ['url']] // wow it works well 
+
+print(url_comp)
+
+
+#for url_comp in update_dict:
+#    res += url_comp + ' '
+
+#res = res.strip()  
+#print(res)
+
+#webbrowser.open(res)
